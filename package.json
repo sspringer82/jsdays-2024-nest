@@ -2,7 +2,9 @@
   "name": "jsdays-2024-nest",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": {
+    "email": "sebastian.springer@maibornwolff.de"
+  },
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
