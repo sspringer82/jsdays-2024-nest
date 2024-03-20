@@ -7,7 +7,7 @@ export class PersonController {
   constructor(private readonly personService: PersonService) {}
 
   @Get()
-  getAllPersons(): Person[] {
+  getAllPersons(): Promise<Person[]> {
     const persons = this.personService.getAllPersons();
     return persons;
   }

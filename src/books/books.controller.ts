@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { Book } from './book';
+import { Book, CreateBook } from './book';
 import { BooksService } from './books.service';
 
 @Controller('books')
@@ -26,7 +26,7 @@ export class BooksController {
   }
 
   @Post()
-  create(@Body() newBook: Book): Book {
+  create(@Body() newBook: CreateBook): Book {
     return this.booksService.create(newBook);
   }
 
