@@ -1,39 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { Book, CreateBook } from './book';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BooksService {
-  private books: Book[] = [];
+  constructor(
+    @InjectRepository(Book) private booksRepository: Repository<Book>,
+  ) {}
 
-  generatedId(): number {
-    const ids = this.books.map((book) => book.id);
-    const highestId = Math.max(...ids);
-    return this.books.length === 0 ? 1 : highestId + 1;
+  getAll(): Promise<Book[]> {
+    return this.booksRepository.find();
   }
 
-  getAll(): Book[] {
-    return this.books;
+  getOne(id: number): Promise<Book> {
+    return this.booksRepository.findOneBy({ id });
   }
 
-  getOne(id: number): Book {
-    return this.books.find((book) => book.id === id);
+  create(newBook: CreateBook): Promise<Book> {
+    return this.booksRepository.save(newBook);
   }
 
-  create(newBook: CreateBook): Book {
-    const id = this.generatedId();
-    const book = { id, ...newBook };
-    this.books.push(book);
-    return book;
+  async delete(id: number): Promise<void> {
+    const book = await this.booksRepository.findOneBy({ id });
+    this.booksRepository.remove(book);
   }
 
-  delete(id: number): void {
-    const index = this.books.findIndex((book) => book.id === id);
-    this.books.splice(index, 1);
-  }
-
-  update(id: number, book: Book): Book {
-    const index = this.books.findIndex((book) => book.id === id);
-    this.books[index] = book;
-    return book;
+  update(id: number, book: Book): Promise<Book> {
+    return this.booksRepository.save(book);
   }
 }

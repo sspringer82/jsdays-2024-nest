@@ -6,39 +6,42 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { Book, CreateBook } from './book';
 import { BooksService } from './books.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Get()
-  getAll(): Book[] {
+  getAll(): Promise<Book[]> {
     return this.booksService.getAll();
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string): Book {
+  getOne(@Param('id') id: string): Promise<Book> {
     const parsedId = parseInt(id, 10);
     return this.booksService.getOne(parsedId);
   }
 
   @Post()
-  create(@Body() newBook: CreateBook): Book {
+  create(@Body() newBook: CreateBook): Promise<Book> {
     return this.booksService.create(newBook);
   }
 
   @Put(':id')
-  update(@Body() updatedBook: Book, @Param('id') id: string): Book {
+  update(@Body() updatedBook: Book, @Param('id') id: string): Promise<Book> {
     const parsedId = parseInt(id, 10);
     return this.booksService.update(parsedId, updatedBook);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): void {
+  async delete(@Param('id') id: string): Promise<void> {
     const parsedId = parseInt(id, 10);
-    this.booksService.delete(parsedId);
+    return this.booksService.delete(parsedId);
   }
 }

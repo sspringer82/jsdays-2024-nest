@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { PersonModule } from './person/person.module';
 import { BooksModule } from './books/books.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       subscribers: [],
       type: 'sqljs',
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
