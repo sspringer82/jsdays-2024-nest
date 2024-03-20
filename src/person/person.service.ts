@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Person } from './person';
+import { CreatePerson, Person } from './person';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -9,11 +9,25 @@ export class PersonService {
     @InjectRepository(Person) private personRepository: Repository<Person>,
   ) {}
 
-  getAllPersons(): Promise<Person[]> {
+  getAll(): Promise<Person[]> {
     return this.personRepository.find();
   }
 
   getOne(id: number): Promise<Person> {
     return this.personRepository.findOneBy({ id });
+  }
+
+  create(newPerson: CreatePerson): Promise<Person> {
+    return this.personRepository.save(newPerson);
+  }
+
+  async update(id: number, updatedPerson: Person): Promise<Person> {
+    return this.personRepository.save(updatedPerson);
+  }
+
+  async delete(id: number): Promise<void> {
+    const person = await this.getOne(id);
+
+    await this.personRepository.remove(person);
   }
 }
