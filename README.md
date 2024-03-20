@@ -13,4 +13,9 @@
 2. Auth Module: `nest g mo auth`
 3. Auth Controller: `nest g co auth`
 4. Auth Service: `nest g s auth`
-5. TBD
+5. AuthController => Login Endpunkt (POST mit username + passwort als Body) + Inject von AuthService
+6. AuthService => login Methode erhält Username + Passwort - überprüft und nutzt jwtService zum signieren
+7. AuthModule imports von PassportModule und JwtModule (secret + signOptions)
+8. jwt strategy => Passport JWT Konfiguration
+9. jwt-auth guard => Absicherung für Endpunkte
+10. @UseGuards(JWTAuthGuard) zum Absichern von Controllern
